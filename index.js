@@ -5,9 +5,22 @@ const cors= require('cors');
 require("dotenv/config")
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
+
+// importing database content
 var db= require('./db')
+
+//routes
 app.get("/",async (req,res)=>{
   let db_comand='SELECT * FROM todos'
+  db.query(db_comand,(err, result)=>{
+    if(err) res.send("some thing is wrong");
+    res.send(result);
+})
+})
+
+app.get("/:id",async (req,res)=>{
+  var id=req.params.id;
+  let db_comand=`SELECT * FROM todos  WHERE _id=${id}`
   db.query(db_comand,(err, result)=>{
     if(err) res.send("some thing is wrong");
     res.send(result);
